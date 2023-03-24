@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class MainWindow extends JFrame {
     public MainWindow(int width, int height, Team team) {
-        setSize(width, height);
+        setSize(width + 16, height + 36);
         setResizable(false);
         add(new GamePanel(team));
         setVisible(true);

@@ -52,9 +52,15 @@ public abstract class Player {
     }
 
     public void setX(int x) {
-        if (x > Constants.MAX_LEFT_POSITION && x < Constants.MAX_RIGHT_POSITION) {
-            this.x = x;
+        if (x > Constants.MAX_RIGHT_POSITION) {
+            this.x = Constants.MAX_RIGHT_POSITION;
+            return;
         }
+        if (x < Constants.MAX_LEFT_POSITION) {
+            this.x = Constants.MAX_LEFT_POSITION;
+            return;
+        }
+        this.x = x;
     }
 
     public void setY(int y) {

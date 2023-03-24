@@ -7,6 +7,9 @@ public abstract class Constants {
     public static final int PLAYER_IMG_WIDTH = 40;
     public static final int MAX_LEFT_POSITION = 0;
     public static final int MAX_RIGHT_POSITION = WINDOW_WIDTH - PLAYER_IMG_WIDTH;
+    public static final int MAX_TOP_POSITION = 0;
+    public static final int MAX_BOTTOM_POSITION = WINDOW_WIDTH - PLAYER_IMG_HEIGHT;
+
 
     public static final String STATIC_FOLDER = "static/";
     public static final String IMAGES_FOLDER = STATIC_FOLDER + "images/";

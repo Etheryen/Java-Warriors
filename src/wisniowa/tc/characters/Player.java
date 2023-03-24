@@ -64,6 +64,14 @@ public abstract class Player {
     }
 
     public void setY(int y) {
+        if (y < Constants.MAX_TOP_POSITION) {
+            this.y = Constants.MAX_TOP_POSITION;
+            return;
+        }
+        if (y > Constants.MAX_BOTTOM_POSITION) {
+            this.y = Constants.MAX_BOTTOM_POSITION;
+            return;
+        }
         this.y = y;
     }
 }

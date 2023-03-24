@@ -34,14 +34,27 @@ public class GamePanel extends JPanel {
             super.keyPressed(e);
             int key = e.getKeyCode();
 
-            if (key == KeyEvent.VK_RIGHT) {
-                for (Player player : team.getMembers()) {
-                    player.setX(player.getX() + 20);
-                }
-            } else {
-                for (Player player : team.getMembers()) {
-                    player.setX(player.getX() - 20);
-                }
+            switch (key) {
+                case KeyEvent.VK_RIGHT:
+                    for (Player player : team.getMembers()) {
+                        player.setX(player.getX() + 20);
+                    }
+                    break;
+                case KeyEvent.VK_LEFT:
+                    for (Player player : team.getMembers()) {
+                        player.setX(player.getX() - 20);
+                    }
+                    break;
+                case KeyEvent.VK_UP:
+                    for (Player player : team.getMembers()) {
+                        player.setY(player.getY() - 20);
+                    }
+                    break;
+                case KeyEvent.VK_DOWN:
+                    for (Player player : team.getMembers()) {
+                        player.setY(player.getY() + 20);
+                    }
+                    break;
             }
             repaint();
         }

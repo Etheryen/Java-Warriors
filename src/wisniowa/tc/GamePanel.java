@@ -41,18 +41,22 @@ public class GamePanel extends JPanel {
 
             switch (key) {
                 case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
                     player = team.getActiveMember();
                     player.setX(player.getX() + 20);
                     break;
                 case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
                     player = team.getActiveMember();
                     player.setX(player.getX() - 20);
                     break;
                 case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
                     player = team.getActiveMember();
                     player.setY(player.getY() - 20);
                     break;
                 case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
                     player = team.getActiveMember();
                     player.setY(player.getY() + 20);
                     break;

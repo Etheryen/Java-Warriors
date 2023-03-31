@@ -25,13 +25,14 @@ public abstract class Player {
         this.goDownKey = goDownKey;
         this.attackLeftKey = attackLeftKey;
         this.attackRightKey = attackRightKey;
+        this.baseImage = new ImageIcon(Constants.IMAGES_FOLDER + this.getClass().getSimpleName() + "/1.png").getImage();
     }
 
     public Player(String name, int x, int y) {
         this.name = name;
         this.x = x;
         this.y = y;
-        //System.out.println("static/images/" + this.getClass().getSimpleName() + "/1.png");
+        System.out.println("static/images/" + this.getClass().getSimpleName() + "/1.png");
         this.baseImage = new ImageIcon(Constants.IMAGES_FOLDER + this.getClass().getSimpleName() + "/1.png").getImage();
     }
 

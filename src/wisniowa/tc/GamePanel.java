@@ -26,34 +26,38 @@ public class GamePanel extends JPanel {
         //System.out.println(team.getMembers().length);//length of null?
         for (Player player : team.getMembers()) {
             g.drawImage(player.getBaseImage(), player.getX(), player.getY(), this);
+            g.drawString(player.getName(), player.getX(), player.getY() + Constants.PLAYER_IMG_HEIGHT + 15);
+            if (player == team.getActiveMember()) {
+                g.drawImage(EffectsImages.ACTIVE_MEMBER, player.getX(), player.getY(), this);
+            }
         }
     }
     public class GameKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            Player player;
             super.keyPressed(e);
             int key = e.getKeyCode();
 
             switch (key) {
                 case KeyEvent.VK_RIGHT:
-                    for (Player player : team.getMembers()) {
-                        player.setX(player.getX() + 20);
-                    }
+                    player = team.getActiveMember();
+                    player.setX(player.getX() + 20);
                     break;
                 case KeyEvent.VK_LEFT:
-                    for (Player player : team.getMembers()) {
-                        player.setX(player.getX() - 20);
-                    }
+                    player = team.getActiveMember();
+                    player.setX(player.getX() - 20);
                     break;
                 case KeyEvent.VK_UP:
-                    for (Player player : team.getMembers()) {
-                        player.setY(player.getY() - 20);
-                    }
+                    player = team.getActiveMember();
+                    player.setY(player.getY() - 20);
                     break;
                 case KeyEvent.VK_DOWN:
-                    for (Player player : team.getMembers()) {
-                        player.setY(player.getY() + 20);
-                    }
+                    player = team.getActiveMember();
+                    player.setY(player.getY() + 20);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    team.switchActiveMember();
                     break;
             }
             repaint();

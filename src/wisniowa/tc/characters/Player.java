@@ -14,6 +14,7 @@ public abstract class Player {
     private int goDownKey;
     private int attackLeftKey;
     private int attackRightKey;
+    private boolean duringTeleport;
 
     public Player(String name, int x, int y, int goLeftKey, int goRightKey, int goUpKey, int goDownKey, int attackLeftKey, int attackRightKey) {
         this.name = name;
@@ -74,5 +75,12 @@ public abstract class Player {
             return;
         }
         this.y = y;
+    }
+
+    public boolean isDuringTeleport(){return false;}
+    public void setDuringTeleport(boolean duringTeleport){}
+
+    public Mag getTeleportingMag() {
+        return new Mag("placeholder", -999, -999);
     }
 }

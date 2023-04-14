@@ -1,6 +1,8 @@
 package wisniowa.tc;
 
+import wisniowa.tc.characters.MagTPIndicator;
 import wisniowa.tc.characters.Player;
+import wisniowa.tc.characters.Mag;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,33 +37,45 @@ public class GamePanel extends JPanel {
     public class GameKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            Player player;
             super.keyPressed(e);
+            Player player = team.getActiveMember();
+            String playerClass = player.getClass().getSimpleName();
             int key = e.getKeyCode();
 
             switch (key) {
                 case KeyEvent.VK_RIGHT:
                 case KeyEvent.VK_D:
-                    player = team.getActiveMember();
                     player.setX(player.getX() + 20);
                     break;
                 case KeyEvent.VK_LEFT:
                 case KeyEvent.VK_A:
-                    player = team.getActiveMember();
                     player.setX(player.getX() - 20);
                     break;
                 case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
-                    player = team.getActiveMember();
                     player.setY(player.getY() - 20);
                     break;
                 case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
-                    player = team.getActiveMember();
                     player.setY(player.getY() + 20);
                     break;
                 case KeyEvent.VK_SPACE:
-                    team.switchActiveMember();
+                    if (!playerClass.equals("MagTPIndicator"))
+                        team.switchActiveMember();
+                    break;
+                case KeyEvent.VK_F:
+                    switch (playerClass) {
+                        case "Mag":
+                            player.setDuringTeleport(true);
+                            team.addMemberAndSetActive(new MagTPIndicator("F TO TP HERE", player.getX(), player.getY(), (Mag) player));
+                            break;
+                        case "MagTPIndicator":
+                            team.popMemberAndSetActive(player.getTeleportingMag());
+                            Player magAfterTP = team.getActiveMember();
+                            magAfterTP.setY(player.getY());
+                            magAfterTP.setX(player.getX());
+                            magAfterTP.setDuringTeleport(false);
+                    }
                     break;
             }
             repaint();

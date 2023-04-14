@@ -83,4 +83,6 @@ public abstract class Player {
     public Mag getTeleportingMag() {
         return new Mag("placeholder", -999, -999);
     }
+
+    public abstract void basicAttack();
 }

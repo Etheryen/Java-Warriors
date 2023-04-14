@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GamePanel extends JPanel {
     //public int x = 100;
@@ -17,6 +19,7 @@ public class GamePanel extends JPanel {
         this.team = team;
         setFocusable(true);
         addKeyListener(new GameKeyListener());
+        addMouseListener(new GameKeyListener());
     }
 
     @Override
@@ -34,51 +37,80 @@ public class GamePanel extends JPanel {
             }
         }
     }
-    public class GameKeyListener extends KeyAdapter {
+
+    public class GameKeyListener extends KeyAdapter implements MouseListener {
         @Override
         public void keyPressed(KeyEvent e) {
             super.keyPressed(e);
+
             Player player = team.getActiveMember();
             String playerClass = player.getClass().getSimpleName();
             int key = e.getKeyCode();
 
             switch (key) {
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_D:
-                    player.setX(player.getX() + 20);
-                    break;
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_A:
-                    player.setX(player.getX() - 20);
-                    break;
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_W:
-                    player.setY(player.getY() - 20);
-                    break;
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_S:
-                    player.setY(player.getY() + 20);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    if (!playerClass.equals("MagTPIndicator"))
-                        team.switchActiveMember();
-                    break;
-                case KeyEvent.VK_F:
+                case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> player.setX(player.getX() + Constants.MS);
+                case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setX(player.getX() - Constants.MS);
+                case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setY(player.getY() - Constants.MS);
+                case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setY(player.getY() + Constants.MS);
+                case KeyEvent.VK_SPACE -> handlePlayerSwitch(playerClass);
+                case KeyEvent.VK_F -> {
                     switch (playerClass) {
-                        case "Mag":
-                            player.setDuringTeleport(true);
-                            team.addMemberAndSetActive(new MagTPIndicator("F TO TP HERE", player.getX(), player.getY(), (Mag) player));
-                            break;
-                        case "MagTPIndicator":
-                            team.popMemberAndSetActive(player.getTeleportingMag());
-                            Player magAfterTP = team.getActiveMember();
-                            magAfterTP.setY(player.getY());
-                            magAfterTP.setX(player.getX());
-                            magAfterTP.setDuringTeleport(false);
+                        case "Mag" -> handleMagStartTP(player);
+                        case "MagTPIndicator" -> handleMagFinishTP(player);
                     }
-                    break;
+                }
             }
             repaint();
         }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Player player = team.getActiveMember();
+            String playerClass = player.getClass().getSimpleName();
+
+            switch (e.getButton()) {
+                case 1 -> handlePlayerBasicAttack(player);
+            }
+            repaint();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent arg0) { }
+
+        @Override
+        public void mouseExited(MouseEvent arg0) { }
+
+        @Override
+        public void mousePressed(MouseEvent arg0) { }
+
+        @Override
+        public void mouseReleased(MouseEvent arg0) { }
+    }
+
+    private void handlePlayerSwitch(String playerClass) {
+        if (!playerClass.equals("MagTPIndicator")) {
+            team.switchActiveMember();
+        }
+    }
+
+    private void handlePlayerBasicAttack(Player player) {
+        player.basicAttack();
+    }
+
+    private void handleMagStartTP(Player player) {
+        player.setDuringTeleport(true);
+        team.addMemberAndSetActive(new MagTPIndicator("F TO TP HERE", player.getX(), player.getY(), (Mag) player));
+    }
+
+    private void handleMagFinishTP(Player player) {
+        team.popMemberAndSetActive(player.getTeleportingMag());
+        Player magAfterTP = team.getActiveMember();
+        magAfterTP.setY(player.getY());
+        magAfterTP.setX(player.getX());
+        magAfterTP.setDuringTeleport(false);
+    }
+
+    public Mag changeToMag(Player player) {
+        return (Mag) player;
     }
 }

@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer){
-            handleProjectilesFlight();
+            handleProjectiles();
             repaint();
         }
     }
@@ -138,9 +138,17 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    private void handleProjectilesFlight() {
+    private void handleProjectiles() {
+        ArrayList<Projectile> outOfScreen = new ArrayList<>();
         for (Projectile projectile: projectiles) {
-            projectile.setX(projectile.getX() + 10);
+            if (projectile.getClass().getSimpleName().equals("Arrow")) {
+                Arrow arrow = (Arrow) projectile;
+                arrow.setNewPositionByX(arrow.getX() + arrow.getSpeed());
+            }
+            if (projectile.getX() > Constants.WINDOW_WIDTH || projectile.getY() > Constants.WINDOW_HEIGHT) {
+                outOfScreen.add(projectile);
+            }
         }
+        projectiles.removeAll(outOfScreen);
     }
 }

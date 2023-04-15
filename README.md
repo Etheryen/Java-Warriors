@@ -8,3 +8,5 @@ A school project - game in java using JPanel.
       and assign for classes)
 - [ ] Clean out of boundaries projectiles
 - [ ] basicAttack function maybe useless
+- [ ] Menu control with keyboard and switching between screens
+      by removing All and adding new in MainWindow

@@ -8,26 +8,6 @@ public abstract class Player {
     private String name;
     private int x, y, damage, healthPoints;// = 100;
     protected Image baseImage;// default musi byc!!!!
-    private int goLeftKey;
-    private int goRightKey;
-    private int goUpKey;
-    private int goDownKey;
-    private int attackLeftKey;
-    private int attackRightKey;
-    private boolean duringTeleport;
-
-    public Player(String name, int x, int y, int goLeftKey, int goRightKey, int goUpKey, int goDownKey, int attackLeftKey, int attackRightKey) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
-        this.goLeftKey = goLeftKey;
-        this.goRightKey = goRightKey;
-        this.goUpKey = goUpKey;
-        this.goDownKey = goDownKey;
-        this.attackLeftKey = attackLeftKey;
-        this.attackRightKey = attackRightKey;
-        this.baseImage = new ImageIcon(Constants.IMAGES_FOLDER + this.getClass().getSimpleName() + "/1.png").getImage();
-    }
 
     public Player(String name, int x, int y) {
         this.name = name;

@@ -1,25 +1,38 @@
 package wisniowa.tc;
 
-import wisniowa.tc.characters.MagTPIndicator;
+import wisniowa.tc.characters.Archer;
 import wisniowa.tc.characters.Player;
 import wisniowa.tc.characters.Mag;
+import wisniowa.tc.projectiles.Arrow;
+import wisniowa.tc.projectiles.Projectile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.util.ArrayList;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements ActionListener {
     //public int x = 100;
-    private Team team;
+    private final Team team;
+    private ArrayList<Projectile> projectiles = new ArrayList<>();
+    private final IdGen idGen = new IdGen();
+
+    private Timer timer = new Timer(250, this);
     public GamePanel(Team team) {
         //System.out.println(team.getMembers().length);//2
         this.team = team;
         setFocusable(true);
         addKeyListener(new GameKeyListener());
         addMouseListener(new GameKeyListener());
+        timer.start();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == timer){
+            handleProjectilesFlight();
+            repaint();
+        }
     }
 
     @Override
@@ -28,7 +41,7 @@ public class GamePanel extends JPanel {
         //g.drawString("hello world", x, 100);
         //g.drawString("WISNIOWA", x, 200);
         //Image img = new ImageIcon("static/images/warrior/1.png").getImage();
-        //System.out.println(team.getMembers().length);//length of null?
+        //System.out.println(this.team.getMembers().length);//length of null?
         for (Player player : team.getMembers()) {
             g.drawImage(player.getBaseImage(), player.getX(), player.getY(), this);
             String playerName = player.getName();
@@ -42,6 +55,10 @@ public class GamePanel extends JPanel {
             if (player == team.getActiveMember()) {
                 g.drawImage(EffectsImages.ACTIVE_MEMBER, player.getX(), player.getY(), this);
             }
+        }
+
+        for (Projectile projectile : projectiles) {
+            g.drawImage(projectile.getBaseImage(), projectile.getX(), projectile.getY(), this);
         }
     }
 
@@ -106,7 +123,24 @@ public class GamePanel extends JPanel {
                 mag.finishTeleport(e.getX(), e.getY());
             }
         }
-        else player.basicAttack();
-        repaint();
+        if (playerClass.equals("Archer")) {
+            Archer archer = (Archer) player;
+            archer.basicAttack();
+            projectiles.add(new Arrow(
+                    idGen.getId(),
+                    archer.getX() + Constants.PLAYER_IMG_WIDTH / 2,
+                    archer.getY() + Constants.PLAYER_IMG_HEIGHT / 2,
+                    archer,
+                    e.getX(),
+                    e.getY()
+            ));
+            System.out.println(projectiles);
+        }
+    }
+
+    private void handleProjectilesFlight() {
+        for (Projectile projectile: projectiles) {
+            projectile.setX(projectile.getX() + 10);
+        }
     }
 }

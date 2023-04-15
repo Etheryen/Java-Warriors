@@ -11,4 +11,8 @@ public class MagTPIndicator extends Player {
         super(name, x, y);
         this.teleportingMag = teleportingMag;
     }
+
+    public void basicAttack() {
+
+    }
 }

@@ -77,12 +77,6 @@ public abstract class Player {
         this.y = y;
     }
 
-    public boolean isDuringTeleport(){return false;}
-    public void setDuringTeleport(boolean duringTeleport){}
-
-    public Mag getTeleportingMag() {
-        return new Mag("placeholder", -999, -999);
-    }
-
     public abstract void basicAttack();
+    public void specialAbility(){};
 }

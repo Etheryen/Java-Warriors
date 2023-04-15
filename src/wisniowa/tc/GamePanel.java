@@ -31,7 +31,14 @@ public class GamePanel extends JPanel {
         //System.out.println(team.getMembers().length);//length of null?
         for (Player player : team.getMembers()) {
             g.drawImage(player.getBaseImage(), player.getX(), player.getY(), this);
-            g.drawString(player.getName(), player.getX(), player.getY() + Constants.PLAYER_IMG_HEIGHT + 15);
+            String playerName = player.getName();
+            if (player.getClass().getSimpleName().equals("Mag")) {
+                Mag mag = (Mag) player;
+                if (mag.isDuringTeleport()) {
+                    playerName = "PRESS M1 TO TP";
+                }
+            }
+            g.drawString(playerName, player.getX(), player.getY() + Constants.PLAYER_IMG_HEIGHT + 15);
             if (player == team.getActiveMember()) {
                 g.drawImage(EffectsImages.ACTIVE_MEMBER, player.getX(), player.getY(), this);
             }
@@ -53,12 +60,7 @@ public class GamePanel extends JPanel {
                 case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setY(player.getY() - Constants.MS);
                 case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setY(player.getY() + Constants.MS);
                 case KeyEvent.VK_SPACE -> handlePlayerSwitch(playerClass);
-                case KeyEvent.VK_F -> {
-                    switch (playerClass) {
-                        case "Mag" -> handleMagStartTP(player);
-                        case "MagTPIndicator" -> handleMagFinishTP(player);
-                    }
-                }
+                case KeyEvent.VK_F -> handleSpecialAbility(player);
             }
             repaint();
         }
@@ -69,7 +71,7 @@ public class GamePanel extends JPanel {
             String playerClass = player.getClass().getSimpleName();
 
             switch (e.getButton()) {
-                case 1 -> handlePlayerBasicAttack(player);
+                case 1 -> handleM1(player, playerClass, e);
             }
             repaint();
         }
@@ -87,30 +89,24 @@ public class GamePanel extends JPanel {
         public void mouseReleased(MouseEvent arg0) { }
     }
 
+    private void handleSpecialAbility(Player player) {
+        player.specialAbility();
+    }
+
     private void handlePlayerSwitch(String playerClass) {
         if (!playerClass.equals("MagTPIndicator")) {
             team.switchActiveMember();
         }
     }
 
-    private void handlePlayerBasicAttack(Player player) {
-        player.basicAttack();
-    }
-
-    private void handleMagStartTP(Player player) {
-        player.setDuringTeleport(true);
-        team.addMemberAndSetActive(new MagTPIndicator("F TO TP HERE", player.getX(), player.getY(), (Mag) player));
-    }
-
-    private void handleMagFinishTP(Player player) {
-        team.popMemberAndSetActive(player.getTeleportingMag());
-        Player magAfterTP = team.getActiveMember();
-        magAfterTP.setY(player.getY());
-        magAfterTP.setX(player.getX());
-        magAfterTP.setDuringTeleport(false);
-    }
-
-    public Mag changeToMag(Player player) {
-        return (Mag) player;
+    private void handleM1(Player player, String playerClass, MouseEvent e) {
+        if (playerClass.equals("Mag")) {
+            Mag mag = (Mag) player;
+            if (mag.isDuringTeleport()) {
+                mag.finishTeleport(e.getX(), e.getY());
+            }
+        }
+        else player.basicAttack();
+        repaint();
     }
 }

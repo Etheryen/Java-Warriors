@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_LEFT, KeyEvent.VK_A -> player.setX(player.getX() - Constants.MS);
                 case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setY(player.getY() - Constants.MS);
                 case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setY(player.getY() + Constants.MS);
-                case KeyEvent.VK_SPACE -> handlePlayerSwitch(playerClass);
+                case KeyEvent.VK_SPACE -> handlePlayerSwitch(player, playerClass);
                 case KeyEvent.VK_F -> handleSpecialAbility(player);
             }
             repaint();
@@ -110,8 +110,14 @@ public class GamePanel extends JPanel implements ActionListener {
         player.specialAbility();
     }
 
-    private void handlePlayerSwitch(String playerClass) {
-        if (!playerClass.equals("MagTPIndicator")) {
+    private void handlePlayerSwitch(Player player, String playerClass) {
+        if (!playerClass.equals("Mag")) {
+            team.switchActiveMember();
+            return;
+        }
+
+        Mag mag = (Mag) player;
+        if (!mag.isDuringTeleport()) {
             team.switchActiveMember();
         }
     }

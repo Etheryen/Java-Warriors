@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements ActionListener {
         for (Projectile projectile: projectiles) {
             if (projectile.getClass().getSimpleName().equals("Arrow")) {
                 Arrow arrow = (Arrow) projectile;
-                arrow.setNewPositionByX(arrow.getX() + arrow.getSpeed());
+                arrow.setNewPosition();
             }
             if (projectile.getX() > Constants.WINDOW_WIDTH || projectile.getY() > Constants.WINDOW_HEIGHT) {
                 outOfScreen.add(projectile);

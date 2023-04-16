@@ -5,7 +5,8 @@ import wisniowa.tc.characters.Archer;
 
 public class Arrow extends Projectile {
     private Archer attacker;
-    private int targetX, targetY, originalX, originalY, speed;
+    private int targetX, targetY, originalX, originalY, speed, sinus;
+    private boolean forwards;
     public Arrow(int id, int x, int y, Archer attacker, int targetX, int targetY) {
         super(id, x, y);
         this.attacker = attacker;
@@ -14,18 +15,21 @@ public class Arrow extends Projectile {
         this.targetY = targetY;
         this.originalX = x;
         this.originalY = y;
-        this.speed = 40;
+        this.speed = 10;
+        this.sinus = (targetY - originalY) / speed;
+        this.forwards = targetX > originalX;
     }
 
     public Archer getAttacker() {
         return attacker;
     }
 
-    public void setNewPositionByX(int x) {
-        this.setX(x);
-        int newY = originalY + ((targetY - originalY) / (targetX - originalX)) * (x - originalX); // calculate trajectory
-        System.out.println(newY);
-        this.setY(newY);
+    public void setNewPosition() {
+//        int newX =
+//        this.setX(newX);
+//        int newY = originalY + ((targetY - originalY) / (targetX - originalX)) * (newX - originalX);
+//        this.setY(newY);
+        System.out.println(sinus + " " + forwards);
     }
 
     public int getSpeed() {

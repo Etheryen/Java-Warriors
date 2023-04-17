@@ -15,9 +15,8 @@ public class GamePanel extends JPanel implements ActionListener {
     //public int x = 100;
     private final Team team;
     private ArrayList<Projectile> projectiles = new ArrayList<>();
-    private final IdGen idGen = new IdGen();
 
-    private Timer timer = new Timer(250, this);
+    private Timer timer = new Timer(1 / Constants.FPS, this);
     public GamePanel(Team team) {
         //System.out.println(team.getMembers().length);//2
         this.team = team;
@@ -77,13 +76,22 @@ public class GamePanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_UP, KeyEvent.VK_W -> player.setY(player.getY() - Constants.MS);
                 case KeyEvent.VK_DOWN, KeyEvent.VK_S -> player.setY(player.getY() + Constants.MS);
                 case KeyEvent.VK_SPACE -> handlePlayerSwitch(player, playerClass);
-                case KeyEvent.VK_F -> handleSpecialAbility(player);
+                case KeyEvent.VK_F -> handleSpecialAbility(player, playerClass);
             }
             repaint();
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) { }
+
+        @Override
+        public void mouseExited(MouseEvent e) { }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
             Player player = team.getActiveMember();
             String playerClass = player.getClass().getSimpleName();
 
@@ -94,20 +102,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         @Override
-        public void mouseEntered(MouseEvent arg0) { }
-
-        @Override
-        public void mouseExited(MouseEvent arg0) { }
-
-        @Override
-        public void mousePressed(MouseEvent arg0) { }
-
-        @Override
-        public void mouseReleased(MouseEvent arg0) { }
+        public void mouseReleased(MouseEvent e) { }
     }
 
-    private void handleSpecialAbility(Player player) {
-        player.specialAbility();
+    private void handleSpecialAbility(Player player, String playerClass) {
+        if (playerClass.equals("Mag")) {
+            Mag mag = (Mag) player;
+            mag.startTeleport();
+        }
     }
 
     private void handlePlayerSwitch(Player player, String playerClass) {
@@ -131,9 +133,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if (playerClass.equals("Archer")) {
             Archer archer = (Archer) player;
-            archer.basicAttack();
             projectiles.add(new Arrow(
-                    idGen.getId(),
                     archer.getX() + Constants.PLAYER_IMG_WIDTH / 2,
                     archer.getY() + Constants.PLAYER_IMG_HEIGHT / 2,
                     archer,
@@ -151,7 +151,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 Arrow arrow = (Arrow) projectile;
                 arrow.setNewPosition();
             }
-            if (projectile.getX() > Constants.WINDOW_WIDTH || projectile.getY() > Constants.WINDOW_HEIGHT) {
+            if (projectile.getX() > Constants.WINDOW_WIDTH
+                    || projectile.getY() > Constants.WINDOW_HEIGHT
+                    || projectile.getX() < -Constants.ARROW_IMG_WIDTH
+                    || projectile.getY() < -Constants.ARROW_IMG_HEIGHT
+                    ) {
                 outOfScreen.add(projectile);
             }
         }

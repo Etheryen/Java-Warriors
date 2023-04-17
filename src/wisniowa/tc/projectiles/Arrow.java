@@ -5,19 +5,16 @@ import wisniowa.tc.characters.Archer;
 
 public class Arrow extends Projectile {
     private Archer attacker;
-    private int targetX, targetY, originalX, originalY, speed, sinus;
-    private boolean forwards;
-    public Arrow(int id, int x, int y, Archer attacker, int targetX, int targetY) {
-        super(id, x, y);
+    private int targetX, targetY, originalX, originalY;
+    private int speed;
+    public Arrow(int x, int y, Archer attacker, int targetX, int targetY) {
+        super(x, y);
         this.attacker = attacker;
-        this.setBaseImage(EffectsImages.ARROW);
         this.targetX = targetX;
         this.targetY = targetY;
         this.originalX = x;
         this.originalY = y;
         this.speed = 10;
-        this.sinus = (targetY - originalY) / speed;
-        this.forwards = targetX > originalX;
     }
 
     public Archer getAttacker() {
@@ -25,11 +22,13 @@ public class Arrow extends Projectile {
     }
 
     public void setNewPosition() {
-//        int newX =
-//        this.setX(newX);
-//        int newY = originalY + ((targetY - originalY) / (targetX - originalX)) * (newX - originalX);
-//        this.setY(newY);
-        System.out.println(sinus + " " + forwards);
+        int deltaX = targetX - originalX;
+        int deltaY = targetY - originalY;
+        double direction = Math.atan2(deltaY, deltaX);
+        int xInc = (int) Math.round(speed * Math.cos(direction));
+        int yInc = (int) Math.round(speed * Math.sin(direction));
+        this.setX(this.getX() + xInc);
+        this.setY(this.getY() + yInc);
     }
 
     public int getSpeed() {

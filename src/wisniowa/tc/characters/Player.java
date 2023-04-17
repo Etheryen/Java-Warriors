@@ -1,13 +1,15 @@
 package wisniowa.tc.characters;
 import wisniowa.tc.Constants;
+import wisniowa.tc.EffectsImages;
 
 import javax.swing.*;
 import java.awt.*;
 
 public abstract class Player {
     private String name;
-    private int x, y, damage, healthPoints;// = 100;
-    protected Image baseImage;// default musi byc!!!!
+    private int x, y;
+    private int damage = 17, healthPoints = 100;
+    protected Image baseImage = EffectsImages.MISSING;// default musi byc!!!!
 
     public Player(String name, int x, int y) {
         this.name = name;
@@ -56,7 +58,4 @@ public abstract class Player {
         }
         this.y = y;
     }
-
-    public abstract void basicAttack();
-    public void specialAbility(){};
 }

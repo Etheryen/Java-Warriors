@@ -1,6 +1,8 @@
 package wisniowa.tc.projectiles;
 
 import wisniowa.tc.Constants;
+import wisniowa.tc.EffectsImages;
+import wisniowa.tc.IdGen;
 import wisniowa.tc.characters.Player;
 
 import javax.swing.*;
@@ -8,13 +10,13 @@ import java.awt.*;
 
 public class Projectile {
     private int id, x, y;
-    private Image baseImage;
+    private Image baseImage = EffectsImages.MISSING;
 
-    public Projectile(int id, int x, int y) {
-        this.id = id;
+    public Projectile(int x, int y) {
+        this.id = IdGen.getId();
         this.x = x;
         this.y = y;
-        this.baseImage = new ImageIcon(Constants.IMAGES_FOLDER + "effects/missing.png").getImage();
+        this.baseImage = new ImageIcon(Constants.IMAGES_FOLDER + "effects/" + this.getClass().getSimpleName() + ".png").getImage();
     }
 
     @Override
@@ -45,9 +47,5 @@ public class Projectile {
 
     public Image getBaseImage() {
         return this.baseImage;
-    }
-
-    public void setBaseImage(Image baseImage) {
-        this.baseImage = baseImage;
     }
 }

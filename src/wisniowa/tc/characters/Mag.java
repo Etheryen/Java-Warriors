@@ -7,21 +7,15 @@ public class Mag extends Player {
 
     public Mag(String name, int x, int y) {
         super(name, x, y);
-        duringTeleport = false;
+        this.duringTeleport = false;
     }
 
     public boolean isDuringTeleport() {
         return this.duringTeleport;
     }
-
-    public void basicAttack() {
-
-    }
-
-    public void specialAbility() {
+    public void startTeleport() {
         this.duringTeleport = true;
     }
-
     public void finishTeleport(int x, int y) {
         this.setX(x - Constants.PLAYER_IMG_WIDTH / 2);
         this.setY(y - Constants.PLAYER_IMG_HEIGHT / 2);
